@@ -115,12 +115,13 @@ footer{color:var(--mut);font-size:12px;margin-top:24px;text-align:center}
 <body>
 <header>
   <div>
-    <h1>Driver App POD Upload Dashboard</h1>
+    <h1>Driver App POD Upload Dashboard <span style="font-size:11px;font-weight:600;background:#22c55e;color:#fff;border-radius:6px;padding:2px 7px;vertical-align:middle">v2 · Summary</span></h1>
     <div class="sub" id="hdrSub"></div>
   </div>
   <div class="hbtns">
     <input type="file" id="fileIn" accept=".xlsx,.xls,.xlsm" style="display:none">
     <button class="btn ghost" id="loadBtn" title="Load a newer Driver App raw Excel with the same columns">Load raw Excel…</button>
+    <button class="btn ghost" id="sumBtn" title="Pan India summary report image (Day / Branches / CN / By Driver / Performance %)">📊 Summary</button>
     <button class="btn ghost" id="pngBtn" title="Generate a PNG image of the current branch list — Upload % ≥80 green, &lt;80 yellow">🖼 PNG Report</button>
     <div class="menu" id="exportMenu">
       <button class="btn" id="exportBtn">⬇ Export ▾</button>
@@ -224,6 +225,26 @@ footer{color:var(--mut);font-size:12px;margin-top:24px;text-align:center}
 
 <footer id="foot"></footer>
 </main>
+<div id="sumModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:1000;align-items:center;justify-content:center;padding:14px">
+  <div style="background:#fff;color:#0f172a;border-radius:14px;max-width:760px;width:100%;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 20px 50px rgba(0,0,0,.35)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <b style="font-size:17px">📊 Summary Report (Pan India)</b>
+      <button id="sumClose" class="btn ghost" style="background:#e5e7eb;color:#111;padding:4px 10px">✕</button>
+    </div>
+    <div class="frow" style="gap:10px;margin-bottom:10px">
+      <div class="fld"><label>From date</label><input type="date" id="sumFrom"></div>
+      <div class="fld"><label>To date</label><input type="date" id="sumTo"></div>
+      <div class="fld"><label>Total BR (auto)</label><input type="number" id="sumBr" style="width:90px"></div>
+      <div class="fld"><label>Middle no. (optional)</label><input type="number" id="sumMid" style="width:110px"></div>
+      <div class="fld"><label>User ID (optional)</label><input type="number" id="sumUid" style="width:110px"></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <button class="btn" id="sumMake" style="background:var(--brand2);color:#fff;padding:9px 16px">🖼 Generate &amp; Download PNG</button>
+      <button class="btn" id="sumShare" style="background:#25D366;color:#fff;padding:9px 16px">📱 Share on WhatsApp</button>
+    </div>
+    <div style="overflow:auto;border:1px solid #e5e7eb;border-radius:8px"><canvas id="sumCanvas" style="max-width:100%;display:block"></canvas></div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 <div class="auth-gate" id="authGate">
   <form class="auth-card" id="authForm">
@@ -846,18 +867,26 @@ const PNG_MSG=[
   {t:'POD update mein deri se operations mein dikkat aa rahi hai.',bold:false},
   {t:'Kripya is request ko priority par lein.',bold:false}
 ];
+/* Region / Controling names are used exactly as they are (REGION, RIGION, CONTROLING, CONTROLLING, ...) — nothing is appended */
+function pngCanonRegion(n){
+  n=String(n||'').toUpperCase().replace(/\s+/g,' ').trim();
+  if(n==='BARODA CONTROLING' || n==='RAJKOT CONTROLING') return 'RAJKOT & BARODA CONTROLING';
+  return n;
+}
 function pngLocationLabel(){
   const f=F();
-  if(f.grp){ const g=f.grp.toUpperCase().trim(), w=(S.dim==='zone'?'ZONE':'REGION');
-    return (g.endsWith(w) || g.includes(' '+w+' ')) ? g : g+' '+w; }
+  if(f.grp){
+    const g=f.grp.toUpperCase().trim();
+    if(S.dim==='zone') return (g.endsWith('ZONE') || g.includes(' ZONE ')) ? g : g+' ZONE';
+    return pngCanonRegion(g);
+  }
   return 'ALL '+(S.dim==='zone'?'ZONES':'REGIONS');
 }
 function pngRegionLabel(rows){
   const f=F();
-  const regions=S.dim==='region'&&f.grp ? [f.grp] : uniq(rows.map(r=>r.region).filter(Boolean));
+  const regions=S.dim==='region'&&f.grp ? [pngCanonRegion(f.grp)] : uniq(rows.map(r=>pngCanonRegion(r.region)).filter(Boolean));
   if(regions.length!==1) return regions.length ? 'MULTIPLE REGIONS' : 'ALL REGIONS';
-  const region=regions[0].toUpperCase().trim();
-  return /\bREGION$/.test(region) ? region : region+' REGION';
+  return regions[0];
 }
 function generatePNG(){
   const rows=pngSelected();   // only the ticked branches — yellow block first, highest CN on top in each colour
@@ -891,9 +920,9 @@ function generatePNG(){
   const msgMaxW=W-pad*2-32;
   let msgLines=[];
   msgContent.forEach(p=>{ mctx.font=(p.bold?'bold ':'')+'15px Arial'; wrapLines(mctx,p.t,msgMaxW).forEach(t=>msgLines.push({text:t,bold:p.bold})); });
-  const msgBoxH=msgPad*2+msgLines.length*msgLineH;
+  const msgBoxH=0;   // message box removed from the PNG image
 
-  const H=bannerH+periodH+legendH+hh+rows.length*rh+tableGap+footerH+footerGap+msgBoxH+pad;
+  const H=bannerH+periodH+legendH+hh+rows.length*rh+tableGap+footerH+pad;
   const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
   const ctx=cv.getContext('2d');
   ctx.fillStyle='#f3f5f9'; ctx.fillRect(0,0,W,H);
@@ -959,14 +988,7 @@ function generatePNG(){
   const gN=rows.filter(r=>r.pct>=0.8).length, yN=rows.length-gN;
   ctx.fillStyle='#0f172a'; ctx.font='bold 15px Arial'; ctx.textAlign='left'; ctx.textBaseline='middle';
   ctx.fillText(`Total: ${rows.length} branches   •   Green (≥80%): ${gN}   •   Yellow (<80%): ${yN}`, pad, y+footerH/2);
-  y+=footerH+footerGap;
-
-  /* ---- WhatsApp message block ---- */
-  ctx.fillStyle='#eff6ff'; ctx.strokeStyle='#60a5fa'; ctx.lineWidth=2;
-  roundRect(ctx,pad,y,W-pad*2,msgBoxH,10); ctx.fill(); ctx.stroke();
-  let my=y+msgPad+msgLineH/2;
-  ctx.textAlign='left';
-  msgLines.forEach(l=>{ ctx.font=(l.bold?'bold ':'')+'15px Arial'; ctx.fillStyle='#1e3a8a'; ctx.fillText(l.text, pad+16, my); my+=msgLineH; });
+  y+=footerH;
 
   cv.toBlob(b=>{
     const fname='Driver_App_PNG_Report_'+safeName(pngLocationLabel())+'.png';
@@ -975,6 +997,73 @@ function generatePNG(){
     toast('PNG report generated — '+rows.length+' branches. WhatsApp share khulne ki koshish kar raha hoon…');
     shareToWhatsApp(b,fname,whatsappText,true);
   }, 'image/png');
+}
+
+/* ============================ SUMMARY REPORT (PAN INDIA) ============================ */
+let sumBlob=null, sumName='';
+function sumOrd(n){ const v=n%100; if(v>=11&&v<=13) return n+'TH'; return n+({1:'ST',2:'ND',3:'RD'}[n%10]||'TH'); }
+function sumParse(v){ if(!v) return null; const p=v.split('-').map(Number); return new Date(p[0],p[1]-1,p[2]); }
+function sumPeriodText(f,t){
+  const M=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  if(!f&&!t) return '';
+  if(f&&!t) return 'FROM '+sumOrd(f.getDate())+' '+M[f.getMonth()]+'.';
+  if(!f&&t) return 'UPTO '+String(t.getDate()).padStart(2,'0')+' '+M[t.getMonth()]+'.';
+  const sameM=f.getMonth()===t.getMonth()&&f.getFullYear()===t.getFullYear();
+  return 'FROM '+sumOrd(f.getDate())+(sameM?'':' '+M[f.getMonth()])+' TO '+String(t.getDate()).padStart(2,'0')+' '+M[t.getMonth()]+'.';
+}
+function sumTotals(){
+  const rows=S.rows||[]; let cn=0,tu=0; rows.forEach(r=>{cn+=r.cn;tu+=r.tu;});
+  return {br:rows.length,cn,tu,pct:cn?tu/cn:0};
+}
+function openSummary(){
+  const T=sumTotals(), iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const now=new Date();
+  $('sumFrom').value=$('pngFrom').value||iso(new Date(now.getFullYear(),now.getMonth(),1));
+  $('sumTo').value=$('pngTo').value||iso(now);
+  $('sumBr').value=T.br;
+  $('sumModal').style.display='flex';
+  drawSummary();
+}
+function drawSummary(){
+  const T=sumTotals();
+  const f=sumParse($('sumFrom').value), t=sumParse($('sumTo').value);
+  const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const day=days[(t||new Date()).getDay()];
+  const brTxt=[$('sumBr').value,$('sumMid').value,$('sumUid').value].map(x=>String(x).trim()).filter(Boolean).join('/');
+  const period=sumPeriodText(f,t);
+  const cols=[{l:'DAY',w:170,v:day},{l:'TOTAL BR & USER ID',w:330,v:brTxt},{l:'DLY_CN',w:200,v:NF.format(T.cn).replace(/,/g,'')},{l:'BY_DRIVER',w:250,v:NF.format(T.tu).replace(/,/g,'')},{l:'PERFORMANCE_%',w:290,v:(T.pct*100).toFixed(2)+'%',big:true}];
+  const W=cols.reduce((a,c)=>a+c.w,0), titleH=58, perH=period?50:0, headH=56, rowH=76, H=titleH+perH+headH+rowH;
+  const cv=$('sumCanvas'); cv.width=W; cv.height=H; const ctx=cv.getContext('2d');
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  ctx.textBaseline='middle'; ctx.textAlign='center'; ctx.strokeStyle='#000'; ctx.lineWidth=1.5;
+  let y=0;
+  ctx.fillStyle='#ffff00'; ctx.fillRect(0,y,W,titleH); ctx.strokeRect(0,y,W,titleH);
+  ctx.fillStyle='#000'; ctx.font='bold 30px Arial'; ctx.fillText('DRIVER APP- PAN INDIA PERFORMANCE REPORT',W/2,y+titleH/2+1); y+=titleH;
+  if(perH){ ctx.fillStyle='#ffd966'; ctx.fillRect(0,y,W,perH); ctx.strokeRect(0,y,W,perH);
+    ctx.fillStyle='#000'; ctx.font='bold 28px Arial'; ctx.fillText(period,W/2,y+perH/2+1); y+=perH; }
+  let x=0;
+  cols.forEach(c=>{ ctx.fillStyle='#ffff00'; ctx.fillRect(x,y,c.w,headH); ctx.strokeRect(x,y,c.w,headH);
+    ctx.fillStyle='#000'; ctx.font='bold 30px Arial'; ctx.fillText(c.l,x+c.w/2,y+headH/2+1); x+=c.w; });
+  y+=headH; x=0;
+  cols.forEach(c=>{ ctx.fillStyle='#fff'; ctx.fillRect(x,y,c.w,rowH); ctx.strokeRect(x,y,c.w,rowH);
+    ctx.fillStyle='#000'; ctx.font=(c.big?'bold 46px':'bold 28px')+' Arial'; ctx.fillText(c.v,x+c.w/2,y+rowH/2+1); x+=c.w; });
+  return {name:'Driver_App_Summary_'+(t?($('sumTo').value):'report')+'.png', text:'DRIVER APP- PAN INDIA PERFORMANCE REPORT'+(period?'\n'+period:'')};
+}
+function makeSummary(share){
+  const info=drawSummary();
+  $('sumCanvas').toBlob(b=>{
+    sumBlob=b; sumName=info.name;
+    if(share){ shareToWhatsApp(b,info.name,info.text,false); }
+    else { saveBlob(b,info.name); toast('Summary PNG downloaded.'); }
+  },'image/png');
+}
+function summaryEvents(){
+  $('sumBtn').onclick=openSummary;
+  $('sumClose').onclick=()=>{ $('sumModal').style.display='none'; };
+  $('sumModal').addEventListener('click',e=>{ if(e.target.id==='sumModal') $('sumModal').style.display='none'; });
+  ['sumFrom','sumTo','sumBr','sumMid','sumUid'].forEach(id=>$(id).addEventListener('input',drawSummary));
+  $('sumMake').onclick=()=>makeSummary(false);
+  $('sumShare').onclick=()=>makeSummary(true);
 }
 
 /* ============================ SHARE ON WHATSAPP ============================ */
@@ -1070,6 +1159,7 @@ function init(){
   $('expAll').onclick=exportAll; $('expReg').onclick=()=>exportRegions(false); $('expZip').onclick=()=>exportRegions(true);
   $('loadBtn').onclick=()=>$('fileIn').click();
   $('pngBtn').onclick=generatePNG;
+  summaryEvents();
   $('pngMake').onclick=generatePNG;
   $('pngShare').onclick=()=>shareToWhatsApp(lastPngBlob,lastPngName,lastPngText,false);
   pngPanelEvents();
