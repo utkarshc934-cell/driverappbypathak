@@ -10,6 +10,12 @@
 --c6:#1d4ed8;--c12:#0ea5e9;--c24:#14b8a6;--cgt:#f59e0b;--cnu:#dc2626;--ok:#16a34a;--bad:#dc2626;--warn:#d97706;--radius:12px}
 *{box-sizing:border-box}
 body{margin:0;font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.sig{order:2;margin-left:auto;display:flex;align-items:center;gap:14px;padding:10px 20px 10px 14px;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.04));border:1px solid rgba(251,191,36,.55);box-shadow:0 6px 22px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,255,255,.06)}
+.sig svg{flex:none;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35))}
+.sig .by{font-size:10.5px;letter-spacing:3px;text-transform:uppercase;color:#fde68a;font-weight:700}
+.sig .nm{font-family:'Segoe Script','Brush Script MT','Lucida Handwriting','Snell Roundhand',cursive;font-size:34px;line-height:1.05;font-weight:700;background:linear-gradient(180deg,#fff7d6,#fbbf24 70%,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding-right:4px}
+.sig .ln{display:block;margin-top:2px}
+.hbtns{order:3;flex-basis:100%}
 header{background:linear-gradient(135deg,#0a2a63,#0b3b8c 60%,#1d4ed8);color:#fff;padding:18px 28px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
 header h1{margin:0;font-size:20px;letter-spacing:.2px}
 header .sub{opacity:.85;font-size:12.5px;margin-top:3px}
@@ -28,6 +34,17 @@ main{max-width:1500px;margin:0 auto;padding:16px 22px 40px}
 .filters{position:sticky;top:0;z-index:20;background:rgba(243,245,249,.96);backdrop-filter:blur(6px);padding:10px 0 10px;border-bottom:1px solid var(--line);margin-bottom:16px}
 .frow{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
 .fld{display:flex;flex-direction:column;gap:3px}
+.msel{position:relative}
+.msel-btn{min-width:200px;max-width:260px;padding:8px 30px 8px 10px;border:1px solid var(--line,#cbd5e1);border-radius:8px;background:#fff;color:#0f172a;font:inherit;font-size:13px;text-align:left;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative}
+.msel-btn:after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#64748b}
+.msel-panel{position:absolute;z-index:60;top:100%;left:0;margin-top:4px;width:300px;max-width:92vw;background:#fff;border:1px solid #cbd5e1;border-radius:10px;box-shadow:0 12px 30px rgba(15,23,42,.22);padding:8px}
+.msel-panel input[type=text]{width:100%;box-sizing:border-box;margin-bottom:6px}
+.msel-acts{display:flex;gap:6px;margin-bottom:6px}
+.msel-acts button{flex:1;padding:5px 8px;border:1px solid #cbd5e1;border-radius:6px;background:#f1f5f9;color:#0f172a;font-size:12px;font-weight:600;cursor:pointer}
+#grpList{max-height:260px;overflow:auto}
+.msel-i{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:6px;font-size:13px;color:#0f172a;text-transform:none;letter-spacing:0;font-weight:500;cursor:pointer}
+.msel-i:hover{background:#eef2f9}
+.msel-e{padding:8px;color:#64748b;font-size:13px}
 .fld label{font-size:11px;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
 select,input[type=text],input[type=number]{border:1px solid #cbd5e1;border-radius:8px;padding:7px 9px;font-size:13px;background:#fff;color:var(--ink);min-width:130px}
 input[type=number]{min-width:80px;width:90px}
@@ -115,8 +132,13 @@ footer{color:var(--mut);font-size:12px;margin-top:24px;text-align:center}
 <body>
 <header>
   <div>
-    <h1>Driver App POD Upload Dashboard <span style="font-size:11px;font-weight:600;background:#22c55e;color:#fff;border-radius:6px;padding:2px 7px;vertical-align:middle">v2 · Summary</span></h1>
+    <h1>Driver App POD Upload Dashboard</h1>
     <div class="sub" id="hdrSub"></div>
+  </div>
+  <div class="sig" title="Created by Utkarsh">
+    <svg width="62" height="62" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="sgG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2b8"/><stop offset=".55" stop-color="#fbbf24"/><stop offset="1" stop-color="#d97706"/></linearGradient></defs><polygon points="32,3 58,18 58,46 32,61 6,46 6,18" fill="url(#sgG)" stroke="#fff" stroke-opacity=".75" stroke-width="2"/><polygon points="32,9 53,21 53,43 32,55 11,43 11,21" fill="none" stroke="#0a2a63" stroke-opacity=".35" stroke-width="1.5"/><path d="M22 19v16a10 10 0 0 0 20 0V19" fill="none" stroke="#0a2a63" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="17" r="3" fill="#0a2a63"/></svg>
+    <div><div class="by">Created by</div><div class="nm">Utkarsh</div>
+      <svg class="ln" width="150" height="8" viewBox="0 0 150 8" aria-hidden="true"><path d="M2 5 C30 0 60 8 90 4 S135 2 148 4" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/></svg></div>
   </div>
   <div class="hbtns">
     <input type="file" id="fileIn" accept=".xlsx,.xls,.xlsm" style="display:none">
@@ -147,7 +169,7 @@ footer{color:var(--mut);font-size:12px;margin-top:24px;text-align:center}
   <div class="frow">
     <div class="fld"><label>Period</label><select id="fPeriod"></select></div>
     <div class="fld"><label>Group by</label><select id="fDim"><option value="zone">Zone (raw data)</option><option value="region">Region (Final Report mapping)</option></select></div>
-    <div class="fld"><label id="lblGrp">Zone</label><select id="fGrp"></select></div>
+    <div class="fld"><label id="lblGrp">Zone</label><select id="fGrp" style="display:none"></select><div class="msel" id="grpMulti"><button type="button" class="msel-btn" id="grpBtn">All Regions</button><div class="msel-panel" id="grpPanel" style="display:none"><input type="text" id="grpSearch" placeholder="Search…"><div class="msel-acts"><button type="button" id="grpAll">Select all</button><button type="button" id="grpClear">Clear</button></div><div id="grpList"></div></div></div></div>
     <div class="fld"><label>Branch Code</label><input type="text" id="fCode" placeholder="e.g. 1103, 2803"></div>
     <div class="fld"><label>Branch Name</label><input type="text" id="fName" placeholder="contains…"></div>
     <div class="fld"><label>Performance</label><select id="fPerf"></select></div>
@@ -226,11 +248,12 @@ footer{color:var(--mut);font-size:12px;margin-top:24px;text-align:center}
 <footer id="foot"></footer>
 </main>
 <div id="sumModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:1000;align-items:center;justify-content:center;padding:14px">
-  <div style="background:#fff;color:#0f172a;border-radius:14px;max-width:760px;width:100%;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 20px 50px rgba(0,0,0,.35)">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <b style="font-size:17px">📊 Summary Report (Pan India)</b>
-      <button id="sumClose" class="btn ghost" style="background:#e5e7eb;color:#111;padding:4px 10px">✕</button>
+  <div style="background:#fff;color:#0f172a;border-radius:16px;max-width:1000px;width:100%;max-height:92vh;overflow:auto;padding:0 0 18px;box-shadow:0 24px 60px rgba(0,0,0,.4)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:14px 20px;background:linear-gradient(90deg,#0a1f4f,#2563eb);color:#fff;border-bottom:4px solid #fbbf24">
+      <b style="font-size:17px;letter-spacing:.3px">📊 Summary Report — Pan India</b>
+      <button id="sumClose" class="btn ghost" style="background:rgba(255,255,255,.18);color:#fff;padding:4px 10px;border:0">✕</button>
     </div>
+    <div style="padding:0 20px">
     <div class="frow" style="gap:10px;margin-bottom:10px">
       <div class="fld"><label>From date</label><input type="date" id="sumFrom"></div>
       <div class="fld"><label>To date</label><input type="date" id="sumTo"></div>
@@ -242,7 +265,8 @@ footer{color:var(--mut);font-size:12px;margin-top:24px;text-align:center}
       <button class="btn" id="sumMake" style="background:var(--brand2);color:#fff;padding:9px 16px">🖼 Generate &amp; Download PNG</button>
       <button class="btn" id="sumShare" style="background:#25D366;color:#fff;padding:9px 16px">📱 Share on WhatsApp</button>
     </div>
-    <div style="overflow:auto;border:1px solid #e5e7eb;border-radius:8px"><canvas id="sumCanvas" style="max-width:100%;display:block"></canvas></div>
+    <div style="overflow:auto;border:1px solid #dbe3ee;border-radius:10px;background:#eef2f9"><canvas id="sumCanvas" style="max-width:100%;display:block"></canvas></div>
+    </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -371,11 +395,11 @@ function agg(list){
 }
 
 /* ============================ FILTERS ============================ */
-function F(){ return {period:$('fPeriod').value,grp:$('fGrp').value,code:$('fCode').value.trim(),name:$('fName').value.trim().toLowerCase(),perf:$('fPerf').value}; }
+function F(){ return {period:$('fPeriod').value,grp:[...(S.grpSet||[])].join(', '),code:$('fCode').value.trim(),name:$('fName').value.trim().toLowerCase(),perf:$('fPerf').value}; }
 function filtered(){
   const f=F(); const toks=f.code.split(/[\s,;]+/).filter(Boolean);
   return S.rows.filter(r=>
-    (!f.period||r.period===f.period) && (!f.grp||r[S.dim]===f.grp) &&
+    (!f.period||r.period===f.period) && (!(S.grpSet&&S.grpSet.size)||S.grpSet.has(r[S.dim])) &&
     (!toks.length||toks.some(t=>String(r.code).includes(t))) &&
     (!f.name||r.name.toLowerCase().includes(f.name)) && (!f.perf||r.perf===f.perf));
 }
@@ -393,13 +417,37 @@ function populateFilters(){
   const p=$('fPerf'); p.innerHTML='<option value="">All performance</option>'+PERF.map(t=>`<option value="${t.k}">${t.label}</option>`).join('');
   $('perfLegend').innerHTML=PERF.map(t=>`<span><i style="background:${t.col}"></i>${t.label}</span>`).join('')+'<span>Performance is based on Upload % = (6H + 12H + 24H) ÷ CN</span>';
 }
+function grpValues(){ return uniq(S.rows.map(r=>r[S.dim])); }
+function grpRenderList(){
+  const q=$('grpSearch').value.trim().toLowerCase();
+  const vals=grpValues().filter(v=>!q||String(v).toLowerCase().includes(q));
+  $('grpList').innerHTML=vals.map(v=>`<label class="msel-i"><input type="checkbox" data-v="${esc(v)}"${S.grpSet.has(v)?' checked':''}><span>${esc(v)}</span></label>`).join('')||'<div class="msel-e">No match</div>';
+}
+function grpUpdateBtn(){
+  const lbl=S.dim==='zone'?'Zone':'Region', n=S.grpSet.size;
+  $('grpBtn').textContent= n===0 ? 'All '+lbl+'s' : n===1 ? [...S.grpSet][0] : n+' '+lbl+'s selected';
+}
+function grpRebuild(){
+  const vals=grpValues(); S.grpSet=new Set([...S.grpSet].filter(v=>vals.includes(v)));
+  grpRenderList(); grpUpdateBtn();
+}
+function grpChanged(){ grpRenderList(); grpUpdateBtn(); S.page=1; update(); }
+function grpEvents(){
+  $('grpBtn').onclick=e=>{ e.stopPropagation(); const p=$('grpPanel'); p.style.display=p.style.display==='none'?'block':'none'; if(p.style.display==='block'){ $('grpSearch').value=''; grpRenderList(); $('grpSearch').focus(); } };
+  document.addEventListener('click',e=>{ if(!$('grpMulti').contains(e.target)) $('grpPanel').style.display='none'; });
+  $('grpSearch').oninput=grpRenderList;
+  $('grpList').addEventListener('change',e=>{ const t=e.target; if(t.dataset&&t.dataset.v!==undefined){ if(t.checked) S.grpSet.add(t.dataset.v); else S.grpSet.delete(t.dataset.v); grpUpdateBtn(); S.page=1; update(); } });
+  $('grpAll').onclick=()=>{ const q=$('grpSearch').value.trim().toLowerCase(); grpValues().filter(v=>!q||String(v).toLowerCase().includes(q)).forEach(v=>S.grpSet.add(v)); grpChanged(); };
+  $('grpClear').onclick=()=>{ S.grpSet.clear(); grpChanged(); };
+}
 function populateGroup(){
   const lbl = S.dim==='zone'?'Zone':'Region';
   $('lblGrp').textContent=lbl; fillSelect($('fGrp'),uniq(S.rows.map(r=>r[S.dim])),'All '+lbl+'s');
   $('sumTitle').textContent=lbl+'-wise Summary';
   $('t4').textContent=lbl+'-wise Upload % comparison';
   $('expRegSub').textContent='Separate file for every '+lbl+' — current filters applied';
-  $('delGroupSub').textContent='Removes all branches in the selected '+lbl+' filter above';
+  $('delGroupSub').textContent='Removes all branches in the selected '+lbl+'(s) in the filter above';
+  grpRebuild();
 }
 
 /* ============================ RENDER ============================ */
@@ -539,7 +587,7 @@ function renderSummary(list,A){
   const keep=S.sortDir; S.sortDir=sumSort.dir;
   drawTable($('sumT'),cols,rows,foot,sumSort.id,c=>{ sumSort={id:c.id,dir:sumSort.id===c.id?-sumSort.dir:(c.id==='k'?1:-1)}; renderSummary(list,A); });
   S.sortDir=keep;
-  $('sumT').querySelectorAll('a.grp').forEach(a=>a.onclick=()=>{ $('fGrp').value=a.dataset.g; update(); window.scrollTo({top:0,behavior:'smooth'}); });
+  $('sumT').querySelectorAll('a.grp').forEach(a=>a.onclick=()=>{ S.grpSet=new Set([a.dataset.g]); grpRenderList(); grpUpdateBtn(); update(); window.scrollTo({top:0,behavior:'smooth'}); });
 }
 
 /* ---------------- branch table ---------------- */
@@ -863,9 +911,9 @@ function pngPanelEvents(){
 
 const PNG_MSG=[
   {t:'Dear Team,',bold:true},
-  {t:'Kripya delivery ke 24 ghante ke andar Driver App par POD update kar dein.',bold:false},
-  {t:'POD update mein deri se operations mein dikkat aa rahi hai.',bold:false},
-  {t:'Kripya is request ko priority par lein.',bold:false}
+  {t:'Requesting you to kindly update the POD on the Driver App within 24 hours of delivery.',bold:false},
+  {t:'Delayed POD updates are causing operational issues.',bold:false},
+  {t:'Please treat this as priority support.',bold:false}
 ];
 /* Region / Controling names are used exactly as they are (REGION, RIGION, CONTROLING, CONTROLLING, ...) — nothing is appended */
 function pngCanonRegion(n){
@@ -873,20 +921,27 @@ function pngCanonRegion(n){
   if(n==='BARODA CONTROLING' || n==='RAJKOT CONTROLING') return 'RAJKOT & BARODA CONTROLING';
   return n;
 }
-function pngLocationLabel(){
-  const f=F();
-  if(f.grp){
-    const g=f.grp.toUpperCase().trim();
-    if(S.dim==='zone') return (g.endsWith('ZONE') || g.includes(' ZONE ')) ? g : g+' ZONE';
-    return pngCanonRegion(g);
-  }
-  return 'ALL '+(S.dim==='zone'?'ZONES':'REGIONS');
+function pngRegionNames(rows){
+  if(S.dim==='region' && S.grpSet.size) return uniq([...S.grpSet].map(pngCanonRegion));
+  return uniq(rows.map(r=>pngCanonRegion(r.region)).filter(Boolean));
 }
-function pngRegionLabel(rows){
-  const f=F();
-  const regions=S.dim==='region'&&f.grp ? [pngCanonRegion(f.grp)] : uniq(rows.map(r=>pngCanonRegion(r.region)).filter(Boolean));
-  if(regions.length!==1) return regions.length ? 'MULTIPLE REGIONS' : 'ALL REGIONS';
-  return regions[0];
+function pngLocationLabel(){
+  if(S.dim==='zone'){
+    const z=[...S.grpSet].map(g=>{ g=String(g).toUpperCase().trim(); return (g.endsWith('ZONE')||g.includes(' ZONE '))?g:g+' ZONE'; });
+    if(!z.length) return 'ALL ZONES';
+    if(z.length===1) return z[0];
+    return z.length===2 ? z.join(' + ') : 'MULTIPLE ZONES ('+z.length+')';
+  }
+  const r=uniq([...S.grpSet].map(pngCanonRegion));
+  if(!r.length) return 'ALL REGIONS';
+  if(r.length===1) return r[0];
+  return r.length===2 ? r.join(' + ') : 'MULTIPLE REGIONS ('+r.length+')';
+}
+/* lines shown after the 📍 in the WhatsApp text: every selected region on its own line */
+function pngRegionLines(rows){
+  const n=pngRegionNames(rows);
+  if(!n.length) return ['ALL REGIONS'];
+  return n.length>8 ? ['MULTIPLE REGIONS ('+n.length+')'] : n;
 }
 function generatePNG(){
   const rows=pngSelected();   // only the ticked branches — yellow block first, highest CN on top in each colour
@@ -894,7 +949,7 @@ function generatePNG(){
   const periodLabel=pngPeriodLabel();
   const msgContent=[
     {t:'━━━━━━━━━━--------------',bold:true},
-    {t:'📍'+pngRegionLabel(rows),bold:true},
+    ...pngRegionLines(rows).map(n=>({t:'📍'+n,bold:true})),
     {t:'━━━━━━━━━━--------------',bold:true},
     ...PNG_MSG
   ];
@@ -903,7 +958,7 @@ function generatePNG(){
     {l:'Code',w:70,f:r=>String(r.code)},
     {l:'Branch Name',w:270,f:r=>r.name,align:'l'},
     {l:'Zone',w:105,f:r=>r.zone},
-    {l:'Region',w:160,f:r=>r.region},
+    {l:'Region',w:215,f:r=>pngCanonRegion(r.region)},
     {l:'Total CN',w:100,f:r=>fmt(r.cn),align:'r'},
     {l:'Total Upload',w:120,f:r=>fmt(r.tu),align:'r'},
     {l:'Upload %',w:115,f:r=>pc(r.pct),align:'r'}
@@ -912,7 +967,7 @@ function generatePNG(){
     const k=c.l==='Zone'?'zone':'region';
     return rows.length>1 ? new Set(rows.map(r=>r[k])).size>1 : true;
   });
-  const bannerH=76, periodH=periodLabel?36:0, legendH=42, hh=46, rh=32, tableGap=18, footerH=30, footerGap=18, msgPad=20, msgLineH=25, pad=22;
+  const bannerH=76, periodH=periodLabel?58:0, legendH=42, hh=46, rh=32, tableGap=18, footerH=30, footerGap=18, msgPad=20, msgLineH=25, pad=22;
   const W=cols.reduce((s,c)=>s+c.w,0)+pad*2;
 
   // pre-measure the wrapped message so we can size the canvas correctly up front
@@ -933,14 +988,17 @@ function generatePNG(){
   ctx.beginPath(); ctx.moveTo(pad,16); ctx.lineTo(W-pad,16); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(pad,bannerH-16); ctx.lineTo(W-pad,bannerH-16); ctx.stroke();
   ctx.fillStyle='#fff'; ctx.font='bold 26px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('📍 '+pngLocationLabel(), W/2, bannerH/2);
+  { const bt='📍 '+pngLocationLabel(); let fs=26; ctx.font='bold '+fs+'px Arial';
+    while(ctx.measureText(bt).width>W-pad*2-40 && fs>14){ fs--; ctx.font='bold '+fs+'px Arial'; }
+    ctx.fillText(bt, W/2, bannerH/2); }
 
   /* ---- period strip (only if a date range was entered) ---- */
   let y=bannerH;
   if(periodH){
-    ctx.fillStyle='#e8eefb'; ctx.fillRect(0,y,W,periodH);
-    ctx.fillStyle='#1e3a8a'; ctx.font='bold 16px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText('Period:  '+periodLabel, W/2, y+periodH/2);
+    const pgr=ctx.createLinearGradient(0,y,0,y+periodH); pgr.addColorStop(0,'#ffe27a'); pgr.addColorStop(1,'#f5a40b');
+    ctx.fillStyle=pgr; ctx.fillRect(0,y,W,periodH);
+    ctx.fillStyle='#0a2a63'; ctx.font='bold 28px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('Period:  '+periodLabel, W/2, y+periodH/2+1);
     y+=periodH;
   }
 
@@ -1031,23 +1089,76 @@ function drawSummary(){
   const day=days[(t||new Date()).getDay()];
   const brTxt=[$('sumBr').value,$('sumMid').value,$('sumUid').value].map(x=>String(x).trim()).filter(Boolean).join('/');
   const period=sumPeriodText(f,t);
-  const cols=[{l:'DAY',w:170,v:day},{l:'TOTAL BR & USER ID',w:330,v:brTxt},{l:'DLY_CN',w:200,v:NF.format(T.cn).replace(/,/g,'')},{l:'BY_DRIVER',w:250,v:NF.format(T.tu).replace(/,/g,'')},{l:'PERFORMANCE_%',w:290,v:(T.pct*100).toFixed(2)+'%',big:true}];
-  const W=cols.reduce((a,c)=>a+c.w,0), titleH=58, perH=period?50:0, headH=56, rowH=76, H=titleH+perH+headH+rowH;
+  const pctV=T.pct*100;
+  const perfCol = pctV>=80 ? '#16a34a' : pctV>=60 ? '#2563eb' : pctV>=40 ? '#f59e0b' : '#dc2626';
+  const cols=[
+    {l:'DAY',w:170,v:day,c:'#0f2a63'},
+    {l:'TOTAL BR & USER ID',w:330,v:brTxt,c:'#0f172a'},
+    {l:'DLY_CN',w:200,v:NF.format(T.cn).replace(/,/g,''),c:'#1d4ed8'},
+    {l:'BY_DRIVER',w:250,v:NF.format(T.tu).replace(/,/g,''),c:'#15803d'},
+    {l:'PERFORMANCE_%',w:290,v:pctV.toFixed(2)+'%',perf:true}
+  ];
+  const CW=cols.reduce((a,c)=>a+c.w,0), pad=28, W=CW+pad*2;
+  const headerH=period?158:96, thH=60, rowH=96, footH=44, goldH=5;
+  const cardH=headerH+goldH+thH+rowH+footH, H=cardH+pad*2;
   const cv=$('sumCanvas'); cv.width=W; cv.height=H; const ctx=cv.getContext('2d');
-  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
-  ctx.textBaseline='middle'; ctx.textAlign='center'; ctx.strokeStyle='#000'; ctx.lineWidth=1.5;
-  let y=0;
-  ctx.fillStyle='#ffff00'; ctx.fillRect(0,y,W,titleH); ctx.strokeRect(0,y,W,titleH);
-  ctx.fillStyle='#000'; ctx.font='bold 30px Arial'; ctx.fillText('DRIVER APP- PAN INDIA PERFORMANCE REPORT',W/2,y+titleH/2+1); y+=titleH;
-  if(perH){ ctx.fillStyle='#ffd966'; ctx.fillRect(0,y,W,perH); ctx.strokeRect(0,y,W,perH);
-    ctx.fillStyle='#000'; ctx.font='bold 28px Arial'; ctx.fillText(period,W/2,y+perH/2+1); y+=perH; }
-  let x=0;
-  cols.forEach(c=>{ ctx.fillStyle='#ffff00'; ctx.fillRect(x,y,c.w,headH); ctx.strokeRect(x,y,c.w,headH);
-    ctx.fillStyle='#000'; ctx.font='bold 30px Arial'; ctx.fillText(c.l,x+c.w/2,y+headH/2+1); x+=c.w; });
-  y+=headH; x=0;
-  cols.forEach(c=>{ ctx.fillStyle='#fff'; ctx.fillRect(x,y,c.w,rowH); ctx.strokeRect(x,y,c.w,rowH);
-    ctx.fillStyle='#000'; ctx.font=(c.big?'bold 46px':'bold 28px')+' Arial'; ctx.fillText(c.v,x+c.w/2,y+rowH/2+1); x+=c.w; });
-  return {name:'Driver_App_Summary_'+(t?($('sumTo').value):'report')+'.png', text:'DRIVER APP- PAN INDIA PERFORMANCE REPORT'+(period?'\n'+period:'')};
+  // page background
+  const bg=ctx.createLinearGradient(0,0,W,H); bg.addColorStop(0,'#e8eefb'); bg.addColorStop(1,'#f6f8fc');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+  // card with soft shadow
+  ctx.save(); ctx.shadowColor='rgba(15,42,99,.28)'; ctx.shadowBlur=26; ctx.shadowOffsetY=8;
+  ctx.fillStyle='#fff'; roundRect(ctx,pad,pad,CW,cardH,18); ctx.fill(); ctx.restore();
+  ctx.save(); roundRect(ctx,pad,pad,CW,cardH,18); ctx.clip();
+  let y=pad;
+  // header band
+  const hg=ctx.createLinearGradient(pad,y,pad+CW,y+headerH); hg.addColorStop(0,'#0a1f4f'); hg.addColorStop(.55,'#12378a'); hg.addColorStop(1,'#2563eb');
+  ctx.fillStyle=hg; ctx.fillRect(pad,y,CW,headerH);
+  ctx.fillStyle='rgba(255,255,255,.06)'; ctx.beginPath(); ctx.arc(pad+CW-60,y-20,150,0,Math.PI*2); ctx.fill();
+  ctx.textBaseline='middle'; ctx.textAlign='center';
+  ctx.fillStyle='#fff'; ctx.font='bold 33px Arial'; ctx.fillText('DRIVER APP – PAN INDIA PERFORMANCE REPORT',pad+CW/2,y+(period?44:headerH/2));
+  if(period){
+    ctx.font='bold 34px Arial'; const tw=ctx.measureText(period).width+84, ph=56, py=y+82;
+    ctx.save(); ctx.shadowColor='rgba(0,0,0,.35)'; ctx.shadowBlur=12; ctx.shadowOffsetY=4;
+    const pg=ctx.createLinearGradient(0,py,0,py+ph); pg.addColorStop(0,'#ffe27a'); pg.addColorStop(1,'#f5a40b');
+    ctx.fillStyle=pg; roundRect(ctx,pad+CW/2-tw/2,py,tw,ph,28); ctx.fill(); ctx.restore();
+    ctx.fillStyle='#0a1f4f'; ctx.textAlign='center'; ctx.fillText(period,pad+CW/2,py+ph/2+2);
+  }
+  y+=headerH;
+  ctx.fillStyle='#fbbf24'; ctx.fillRect(pad,y,CW,goldH); y+=goldH;
+  // table header
+  ctx.fillStyle='#0f2a63'; ctx.fillRect(pad,y,CW,thH);
+  let x=pad;
+  cols.forEach((c,k)=>{
+    ctx.fillStyle='#fff'; ctx.font='bold 20px Arial'; ctx.textAlign='center'; ctx.fillText(c.l,x+c.w/2,y+thH/2+1);
+    if(k){ ctx.fillStyle='rgba(255,255,255,.18)'; ctx.fillRect(x,y+12,1.5,thH-24); }
+    x+=c.w;
+  });
+  y+=thH;
+  // data row
+  ctx.fillStyle='#fbfcff'; ctx.fillRect(pad,y,CW,rowH);
+  x=pad;
+  cols.forEach((c,k)=>{
+    if(k){ ctx.fillStyle='#e2e8f0'; ctx.fillRect(x,y+14,1.5,rowH-28); }
+    if(c.perf){
+      const bw=c.w-44, bh=62, bx=x+22, by=y+(rowH-bh)/2;
+      ctx.save(); ctx.shadowColor='rgba(0,0,0,.18)'; ctx.shadowBlur=8; ctx.shadowOffsetY=3;
+      ctx.fillStyle=c.perfCol||perfCol; roundRect(ctx,bx,by,bw,bh,14); ctx.fill(); ctx.restore();
+      ctx.fillStyle='#fff'; ctx.font='bold 42px Arial'; ctx.textAlign='center'; ctx.fillText(c.v,x+c.w/2,y+rowH/2+2);
+    } else {
+      ctx.fillStyle=c.c; ctx.font='bold 32px Arial'; ctx.textAlign='center'; ctx.fillText(c.v,x+c.w/2,y+rowH/2+1);
+    }
+    x+=c.w;
+  });
+  ctx.fillStyle='#cbd5e1'; ctx.fillRect(pad,y+rowH-1.5,CW,1.5);
+  y+=rowH;
+  // footer
+  ctx.fillStyle='#f1f5f9'; ctx.fillRect(pad,y,CW,footH);
+  ctx.fillStyle='#64748b'; ctx.font='14px Arial'; ctx.textBaseline='middle';
+  ctx.textAlign='left'; ctx.fillText('Performance % = By Driver ÷ Daily CN',pad+22,y+footH/2);
+  const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], n=new Date();
+  ctx.textAlign='right'; ctx.fillText('Generated: '+String(n.getDate()).padStart(2,'0')+' '+M[n.getMonth()]+' '+n.getFullYear(),pad+CW-22,y+footH/2);
+  ctx.restore();
+  return {name:'Driver_App_Summary_'+(t?($('sumTo').value):'report')+'.png', text:'DRIVER APP - PAN INDIA PERFORMANCE REPORT'+(period?'\n'+period:'')};
 }
 function makeSummary(share){
   const info=drawSummary();
@@ -1106,14 +1217,15 @@ async function deleteByBranch(){
   catch(error){ toast('Delete failed: '+error.message,7000); }
 }
 async function deleteByGroup(){
-  const grp=$('fGrp').value, lbl=S.dim==='zone'?'Zone':'Region';
-  if(!grp){ toast(`Select a ${lbl} in the Group filter above, then try Delete again.`); return; }
-  const match=S.rows.filter(r=>r[S.dim]===grp);
+  const sel=[...S.grpSet], lbl=S.dim==='zone'?'Zone':'Region';
+  if(!sel.length){ toast(`Select at least one ${lbl} in the filter above, then try Delete again.`); return; }
+  const match=S.rows.filter(r=>S.grpSet.has(r[S.dim]));
   if(!match.length){ toast('No branches found for that '+lbl+'.'); return; }
-  if(!confirm(`Delete all ${fmt(match.length)} branch(es) in ${lbl} "${grp}"? This cannot be undone.`)) return;
+  const what=sel.length===1 ? `${lbl} "${sel[0]}"` : `${sel.length} ${lbl}s (${sel.join(', ')})`;
+  if(!confirm(`Delete all ${fmt(match.length)} branch(es) in ${what}? This cannot be undone.`)) return;
   const keys=new Set(match.map(r=>String(r.period).trim()+'\u001f'+String(r.code).trim()));
   const raw=S.raw.filter(r=>!keys.has(rawKey(r)));
-  try{ await saveCloudDataset(raw,S.sourceLabel); toast(`Deleted ${fmt(match.length)} branch(es) from ${grp} and synced.`); }
+  try{ await saveCloudDataset(raw,S.sourceLabel); toast(`Deleted ${fmt(match.length)} branch(es) from ${sel.length===1?sel[0]:sel.length+' '+lbl+'s'} and synced.`); }
   catch(error){ toast('Delete failed: '+error.message,7000); }
 }
 
@@ -1141,11 +1253,13 @@ function setHeader(){
 
 /* ============================ EVENTS ============================ */
 function init(){
+  S.grpSet=new Set();
   S.rows=buildRows(D.raw); populateFilters(); setHeader();
-  ['fPeriod','fGrp','fPerf'].forEach(id=>$(id).onchange=()=>{S.page=1;update();});
+  ['fPeriod','fPerf'].forEach(id=>$(id).onchange=()=>{S.page=1;update();});
+  grpEvents();
   ['fCode','fName'].forEach(id=>$(id).oninput=()=>{S.page=1;update();});
   $('fDim').onchange=e=>{S.dim=e.target.value; populateGroup(); S.page=1; update();};
-  $('resetBtn').onclick=()=>{['fCode','fName'].forEach(i=>$(i).value=''); $('fGrp').value=''; $('fPerf').value=''; if($('fPeriod').options.length>2)$('fPeriod').value=''; S.page=1; update();};
+  $('resetBtn').onclick=()=>{['fCode','fName'].forEach(i=>$(i).value=''); S.grpSet.clear(); grpRenderList(); grpUpdateBtn(); $('fPerf').value=''; if($('fPeriod').options.length>2)$('fPeriod').value=''; S.page=1; update();};
   ['minCN','topN'].forEach(id=>$(id).oninput=()=>renderTopBottom(filtered()));
   document.querySelectorAll('.seg').forEach(s=>s.querySelectorAll('button').forEach(b=>b.onclick=()=>{
     s.querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); S.mode[s.dataset.chart]=b.dataset.m; const l=filtered(); renderCharts(l,agg(l)); }));
